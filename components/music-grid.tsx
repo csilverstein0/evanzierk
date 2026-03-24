@@ -2,14 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MusicCard } from "@/components/music-card";
+import { cn } from "@/lib/utils";
 
 const tracks = [
-  { title: "Track 1", audioSrc: "/audio/track-1.mp3" },
-  { title: "Track 2", audioSrc: "/audio/track-2.mp3" },
-  { title: "Track 3", audioSrc: "/audio/track-3.mp3" },
-  { title: "Track 4", audioSrc: "/audio/track-4.mp3" },
-  { title: "Track 5", audioSrc: "/audio/track-5.mp3" },
-  { title: "Track 6", audioSrc: "/audio/track-6.mp3" },
+  { title: "Track 1", audioSrc: "/audio/track-1.mp3", imageSrc: "/images/bg-1.svg" },
+  { title: "Track 2", audioSrc: "/audio/track-2.mp3", imageSrc: "/images/bg-2.svg" },
+  { title: "Track 3", audioSrc: "/audio/track-3.mp3", imageSrc: "/images/bg-3.svg" },
+  { title: "Track 4", audioSrc: "/audio/track-4.mp3", imageSrc: "/images/bg-4.svg" },
+  { title: "Track 5", audioSrc: "/audio/track-5.mp3", imageSrc: "/images/bg-5.svg" },
+  { title: "Track 6", audioSrc: "/audio/track-6.mp3", imageSrc: "/images/bg-6.svg" },
 ];
 
 export function MusicGrid() {
@@ -61,18 +62,40 @@ export function MusicGrid() {
   }, []);
 
   return (
-    <section className="px-4 pb-24">
-      <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <>
+      <div className="fixed inset-0 -z-10">
         {tracks.map((track, index) => (
-          <MusicCard
+          <div
             key={track.title}
-            title={track.title}
-            isActive={activeTrack === index}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
+            className={cn(
+              "absolute inset-0 bg-cover bg-center transition-opacity duration-400 ease-in-out",
+              activeTrack === index ? "opacity-100" : "opacity-0"
+            )}
+            style={{ backgroundImage: `url(${track.imageSrc})` }}
           />
         ))}
+        {/* Semi-transparent overlay for text readability */}
+        <div
+          className={cn(
+            "absolute inset-0 transition-opacity duration-400 ease-in-out",
+            activeTrack !== null ? "bg-black/30 opacity-100" : "opacity-0"
+          )}
+        />
       </div>
-    </section>
+
+      <section className="px-4 pb-24">
+        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {tracks.map((track, index) => (
+            <MusicCard
+              key={track.title}
+              title={track.title}
+              isActive={activeTrack === index}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+            />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
