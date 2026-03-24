@@ -5,46 +5,49 @@
 
 ---
 
-## PR 1: Project Scaffolding
+## PR 1: Project Scaffolding ✅ COMPLETE
 **Branch**: `feat/scaffolding`
 **Base**: `main`
+**Status**: Built, reviewed, ready to commit
 
-### Scope
-- Scaffold Next.js project (App Router, TypeScript, Tailwind CSS, ESLint)
-- Init shadcn/ui, add `Card` and `Button` components
-- Configure `next.config.mjs` for GitHub Pages static export (`output: 'export'`, `basePath`, `trailingSlash`, `images: { unoptimized: true }`)
-- Verify `npm run build` produces `out/` directory successfully
-- Preserve existing `Plans/` directory and `claude.md`
+### What was done
+- Scaffolded Next.js 16.2.1 (App Router, TypeScript, Tailwind CSS v4, ESLint)
+- Init shadcn/ui v4.1.0 (style: "base-nova"), added `Card` and `Button` components
+- Configured `next.config.ts` for GitHub Pages static export
+- Simplified `app/page.tsx` to "Evan Zerk" placeholder
+- Updated `app/layout.tsx` metadata
+- Preserved `Plans/` directory and `CLAUDE.md`
+- Code review (reuse, quality, efficiency) passed — no issues found
 
-### Includes
-- `package.json`, `tsconfig.json`, `next.config.mjs`, `postcss.config.mjs`
-- `app/layout.tsx` with basic metadata and global styles
-- `app/page.tsx` with a minimal "Hello World" placeholder
-- `app/globals.css` with Tailwind + shadcn theme tokens
-- `components/ui/card.tsx`, `components/ui/button.tsx` (shadcn)
-- `lib/utils.ts` (shadcn `cn` utility)
-- `components.json` (shadcn config)
+### Key details for context
+- **Config file is `next.config.ts`** (TypeScript, not `.mjs` as originally planned)
+- **`basePath` is conditional**: empty string in dev (`next dev`), `"/evanzierk.com"` in production (`next build`). This avoids a redirect loop caused by the dot in the repo name.
+  ```ts
+  const isProd = process.env.NODE_ENV === "production";
+  basePath: isProd ? "/evanzierk.com" : "",
+  ```
+- **Tailwind v4 CSS-first config** is already in place — `@import "tailwindcss"` + `@theme inline` in `globals.css`, `@tailwindcss/postcss` in PostCSS. No `tailwind.config.js` needed.
+- **shadcn/ui v4** uses `@base-ui/react` (not Radix UI) for primitives, `tw-animate-css`, and `shadcn/tailwind.css` imports. These are new v4 conventions.
+- **OKLCH colors** throughout the theme (shadcn default for v4).
+- **`npm run build`** produces `out/` with `index.html` — verified working.
+- **Dev server**: `npm run dev` → `http://localhost:3000` (no basePath in dev).
+- **Git**: initial scaffold committed to `main`, feature work on `feat/scaffolding` branch. Changes not yet committed.
 
-### Excludes
-- No custom components yet (hero, music grid, music card)
-- No `public/audio/` or `public/images/` directories
-- No GitHub Actions workflow
-- No styling beyond shadcn defaults
+### Files changed (uncommitted on `feat/scaffolding`)
+- `next.config.ts` — GitHub Pages export + conditional basePath
+- `app/layout.tsx` — metadata: "Evan Zerk"
+- `app/page.tsx` — simplified placeholder
+- `app/globals.css` — shadcn/ui v4 theme tokens (CLI-generated)
+- `components/ui/button.tsx` — shadcn Button (CLI-generated)
+- `components/ui/card.tsx` — shadcn Card (CLI-generated, untracked)
+- `components.json` — shadcn config (CLI-generated)
+- `lib/utils.ts` — cn() utility (CLI-generated)
+- `package.json` / `package-lock.json` — new dependencies
 
-### Execution instructions
-1. Move `Plans/` and `claude.md` to a temp location
-2. Run `npx create-next-app@latest evanzierk.com --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*" --use-npm`
-3. Move `Plans/` and `claude.md` back into the project
-4. Edit `next.config.mjs`: add `output: 'export'`, `basePath: '/evanzierk.com'`, `trailingSlash: true`, `images: { unoptimized: true }`
-5. Run `npx shadcn@latest init` (accept defaults, CSS variables: yes)
-6. Run `npx shadcn@latest add card button`
-7. Run `npm run build` — confirm `out/` directory is created
-8. Init git repo, create `main` branch, commit scaffolding
-9. Create `feat/scaffolding` branch (or commit directly to main since this is the first PR)
-
-### Verification
-- `npm run build` exits 0 and produces `out/index.html`
-- `npx serve out` loads a page at localhost
+### To finish PR 1
+1. `git add` all changed/untracked files
+2. Commit
+3. Push to remote and create PR (or merge directly to main)
 
 ---
 
@@ -69,11 +72,12 @@
 - No interactivity — this is entirely a server component
 
 ### Execution instructions
-1. Create `components/hero-section.tsx` with name, bio, 3 links using shadcn `Button`
-2. Update `app/page.tsx` to import and render `<HeroSection />`
+1. Create `components/hero-section.tsx` with name, bio, 3 links using shadcn `Button` (import from `@/components/ui/button`)
+2. Update `app/page.tsx` to import and render `<HeroSection />` (replace the current placeholder `<h1>`)
 3. Style with Tailwind: vertically centered or top-centered, generous whitespace, responsive text sizes
-4. Run `npm run build` — confirm success
-5. Commit and open PR
+4. Dev server: `npm run dev` → test at `http://localhost:3000` (no basePath in dev)
+5. Run `npm run build` — confirm success
+6. Commit and open PR
 
 ### Verification
 - Page displays name, bio, and 3 clickable link buttons
@@ -110,9 +114,15 @@
 - No actual audio files — just the infrastructure
 - `music-grid.tsx` does NOT render background layers yet
 
+### Important context from PR 1
+- shadcn Card is at `@/components/ui/card` — composable: `Card`, `CardHeader`, `CardTitle`, `CardContent`, etc.
+- `cn()` utility at `@/lib/utils` for merging Tailwind classes
+- Dev server: `npm run dev` → `http://localhost:3000` (basePath is empty in dev mode)
+- Config is `next.config.ts` (TypeScript)
+
 ### Execution instructions
 1. Create `public/audio/` with a `.gitkeep`
-2. Create `components/music-card.tsx`: square card using shadcn `Card`, `aspect-square`, accepts hover callbacks
+2. Create `components/music-card.tsx`: square card using shadcn `Card` (import from `@/components/ui/card`), `aspect-square`, accepts hover callbacks
 3. Create `components/music-grid.tsx`:
    - `'use client'` directive
    - Track data: `[{ title: "Track 1", audioSrc: "/audio/track-1.mp3" }, ...]`
@@ -121,9 +131,10 @@
    - `handleMouseEnter(index)`: pause all, lazy-init audio, play, set activeTrack
    - `handleMouseLeave()`: pause current, reset, clear activeTrack
    - Render 6 `<MusicCard>` in a grid
-4. Update `app/page.tsx` to include `<MusicGrid />`
-5. Run `npm run build` — confirm success
-6. Commit and open PR
+4. Update `app/page.tsx` to include `<MusicGrid />` below `<HeroSection />`
+5. Dev server: `npm run dev` → test at `http://localhost:3000`
+6. Run `npm run build` — confirm success
+7. Commit and open PR
 
 ### Verification
 - 6 square cards display in a 2x3 grid
@@ -226,7 +237,7 @@
         - id: deployment
           uses: actions/deploy-pages@v4
   ```
-- Add `out/` to `.gitignore` if not already there
+- `out/` is already in `.gitignore` (confirmed in PR 1)
 
 ### Excludes
 - No code changes to components or pages
@@ -236,7 +247,7 @@
 ### Execution instructions
 1. Create `.github/workflows/` directory
 2. Write `deploy.yml` with the workflow above
-3. Ensure `out/` is in `.gitignore`
+3. `out/` is already in `.gitignore` — no action needed
 4. Run `npm run build` one final time to confirm nothing is broken
 5. Commit and open PR
 
@@ -249,10 +260,19 @@
 
 ## Summary
 
-| PR | Branch | Scope | Depends on |
-|----|--------|-------|------------|
-| 1 | `feat/scaffolding` | Next.js + shadcn + GitHub Pages config | — |
-| 2 | `feat/hero-section` | Name, bio, 3 links | PR 1 |
-| 3 | `feat/music-grid` | 2x3 grid + hover audio | PR 2 |
-| 4 | `feat/background-images` | Full-screen background swap on hover | PR 3 |
-| 5 | `feat/github-pages-deploy` | GitHub Actions workflow | PR 4 |
+| PR | Branch | Scope | Status |
+|----|--------|-------|--------|
+| 1 | `feat/scaffolding` | Next.js 16 + shadcn/ui v4 + GitHub Pages config | ✅ Complete (uncommitted) |
+| 2 | `feat/hero-section` | Name, bio, 3 links | Pending |
+| 3 | `feat/music-grid` | 2x3 grid + hover audio | Pending |
+| 4 | `feat/background-images` | Full-screen background swap on hover | Pending |
+| 5 | `feat/github-pages-deploy` | GitHub Actions workflow | Pending |
+
+## Project state for new context windows
+- **Working directory**: `/Users/caseysilverstein/Documents/2026/evanzierk.com/`
+- **Git**: `main` has initial scaffold commit. `feat/scaffolding` has uncommitted PR1 changes.
+- **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
+- **Dev server**: `npm run dev` → `http://localhost:3000`
+- **Build**: `npm run build` → static export to `out/`
+- **basePath**: conditional — empty in dev, `"/evanzierk.com"` in production (see `next.config.ts`)
+- **Reference docs**: `Plans/research.md` has detailed framework research
