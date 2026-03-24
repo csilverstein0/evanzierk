@@ -8,81 +8,22 @@
 ## PR 1: Project Scaffolding ✅ COMPLETE
 **Branch**: `feat/scaffolding`
 **Base**: `main`
-**Status**: Built, reviewed, ready to commit
-
-### What was done
-- Scaffolded Next.js 16.2.1 (App Router, TypeScript, Tailwind CSS v4, ESLint)
-- Init shadcn/ui v4.1.0 (style: "base-nova"), added `Card` and `Button` components
-- Configured `next.config.ts` for GitHub Pages static export
-- Simplified `app/page.tsx` to "Evan Zerk" placeholder
-- Updated `app/layout.tsx` metadata
-- Preserved `Plans/` directory and `CLAUDE.md`
-- Code review (reuse, quality, efficiency) passed — no issues found
-
-### Key details for context
-- **Config file is `next.config.ts`** (TypeScript, not `.mjs` as originally planned)
-- **`basePath` is conditional**: empty string in dev (`next dev`), `"/evanzierk"` in production (`next build`). This avoids a redirect loop caused by the dot in the repo name.
-  ```ts
-  const isProd = process.env.NODE_ENV === "production";
-  basePath: isProd ? "/evanzierk" : "",
-  ```
-- **Tailwind v4 CSS-first config** is already in place — `@import "tailwindcss"` + `@theme inline` in `globals.css`, `@tailwindcss/postcss` in PostCSS. No `tailwind.config.js` needed.
-- **shadcn/ui v4** uses `@base-ui/react` (not Radix UI) for primitives, `tw-animate-css`, and `shadcn/tailwind.css` imports. These are new v4 conventions.
-- **OKLCH colors** throughout the theme (shadcn default for v4).
-- **`npm run build`** produces `out/` with `index.html` — verified working.
-- **Dev server**: `npm run dev` → `http://localhost:3000` (no basePath in dev).
-- **Git**: initial scaffold committed to `main`, feature work on `feat/scaffolding` branch. Changes not yet committed.
-
-### Files changed (uncommitted on `feat/scaffolding`)
-- `next.config.ts` — GitHub Pages export + conditional basePath
-- `app/layout.tsx` — metadata: "Evan Zerk"
-- `app/page.tsx` — simplified placeholder
-- `app/globals.css` — shadcn/ui v4 theme tokens (CLI-generated)
-- `components/ui/button.tsx` — shadcn Button (CLI-generated)
-- `components/ui/card.tsx` — shadcn Card (CLI-generated, untracked)
-- `components.json` — shadcn config (CLI-generated)
-- `lib/utils.ts` — cn() utility (CLI-generated)
-- `package.json` / `package-lock.json` — new dependencies
-
-### To finish PR 1
-1. `git add` all changed/untracked files
-2. Commit
-3. Push to remote and create PR (or merge directly to main)
+**Status**: ✅ Merged to `main`, pushed to remote
 
 ---
 
-## PR 2: Hero Section
+## PR 2: Hero Section ✅ COMPLETE
 **Branch**: `feat/hero-section`
 **Base**: `main` (after PR 1 merged)
+**PR**: https://github.com/csilverstein0/evanzierk/pull/1
+**Status**: Built, reviewed (/simplify passed), pushed, PR open — awaiting merge
 
-### Scope
-- Build the hero section: Evan Zerk's name, one-line bio, and 3 external links
-- Light minimal styling with Tailwind
-
-### Includes
-- `components/hero-section.tsx` — server component with:
-  - Large heading: "Evan Zerk"
-  - Subtitle/bio line (placeholder text)
-  - 3 `Button` components as external links (placeholder URLs, `variant="outline"`)
-- Update `app/page.tsx` to render `<HeroSection />`
-- Tailwind styling: centered layout, clean typography, appropriate spacing
-
-### Excludes
-- No music grid, no audio, no background images
-- No interactivity — this is entirely a server component
-
-### Execution instructions
-1. Create `components/hero-section.tsx` with name, bio, 3 links using shadcn `Button` (import from `@/components/ui/button`)
-2. Update `app/page.tsx` to import and render `<HeroSection />` (replace the current placeholder `<h1>`)
-3. Style with Tailwind: vertically centered or top-centered, generous whitespace, responsive text sizes
-4. Dev server: `npm run dev` → test at `http://localhost:3000` (no basePath in dev)
-5. Run `npm run build` — confirm success
-6. Commit and open PR
-
-### Verification
-- Page displays name, bio, and 3 clickable link buttons
-- Responsive: looks good on mobile and desktop
+### What was done
+- Created `components/hero-section.tsx` — server component with name, bio, 3 external link buttons
+- Updated `app/page.tsx` — renders `<HeroSection />`, uses `<main>` with `flex grow flex-col`
+- Uses shadcn `Button` with `variant="outline"` and Base UI `render` prop for anchor semantics
 - `npm run build` succeeds
+- Code review (reuse, quality, efficiency) passed — one fix: removed redundant `min-h-screen` on `<main>` (body already handles viewport height)
 
 ---
 
@@ -262,15 +203,15 @@
 
 | PR | Branch | Scope | Status |
 |----|--------|-------|--------|
-| 1 | `feat/scaffolding` | Next.js 16 + shadcn/ui v4 + GitHub Pages config | ✅ Complete (uncommitted) |
-| 2 | `feat/hero-section` | Name, bio, 3 links | Pending |
+| 1 | `feat/scaffolding` | Next.js 16 + shadcn/ui v4 + GitHub Pages config | ✅ Merged to main |
+| 2 | `feat/hero-section` | Name, bio, 3 links | ✅ PR #1 open, awaiting merge |
 | 3 | `feat/music-grid` | 2x3 grid + hover audio | Pending |
 | 4 | `feat/background-images` | Full-screen background swap on hover | Pending |
 | 5 | `feat/github-pages-deploy` | GitHub Actions workflow | Pending |
 
 ## Project state for new context windows
 - **Working directory**: `/Users/caseysilverstein/Documents/2026/evanzierk.com/`
-- **Git**: `main` has initial scaffold commit. `feat/scaffolding` has uncommitted PR1 changes.
+- **Git**: `main` has PR1 scaffolding merged. `feat/hero-section` has PR2 (1 commit ahead of main), PR open.
 - **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
 - **Dev server**: `npm run dev` → `http://localhost:3000`
 - **Build**: `npm run build` → static export to `out/`
