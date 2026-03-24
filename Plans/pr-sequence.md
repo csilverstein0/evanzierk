@@ -21,10 +21,10 @@
 
 ### Key details for context
 - **Config file is `next.config.ts`** (TypeScript, not `.mjs` as originally planned)
-- **`basePath` is conditional**: empty string in dev (`next dev`), `"/evanzierk.com"` in production (`next build`). This avoids a redirect loop caused by the dot in the repo name.
+- **`basePath` is conditional**: empty string in dev (`next dev`), `"/evanzierk"` in production (`next build`). This avoids a redirect loop caused by the dot in the repo name.
   ```ts
   const isProd = process.env.NODE_ENV === "production";
-  basePath: isProd ? "/evanzierk.com" : "",
+  basePath: isProd ? "/evanzierk" : "",
   ```
 - **Tailwind v4 CSS-first config** is already in place — `@import "tailwindcss"` + `@theme inline` in `globals.css`, `@tailwindcss/postcss` in PostCSS. No `tailwind.config.js` needed.
 - **shadcn/ui v4** uses `@base-ui/react` (not Radix UI) for primitives, `tw-animate-css`, and `shadcn/tailwind.css` imports. These are new v4 conventions.
@@ -274,5 +274,5 @@
 - **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
 - **Dev server**: `npm run dev` → `http://localhost:3000`
 - **Build**: `npm run build` → static export to `out/`
-- **basePath**: conditional — empty in dev, `"/evanzierk.com"` in production (see `next.config.ts`)
+- **basePath**: conditional — empty in dev, `"/evanzierk"` in production (see `next.config.ts`)
 - **Reference docs**: `Plans/research.md` has detailed framework research
