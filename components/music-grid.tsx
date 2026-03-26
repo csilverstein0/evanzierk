@@ -5,12 +5,9 @@ import { MusicCard } from "@/components/music-card";
 import { cn } from "@/lib/utils";
 
 const tracks = [
-  { title: "Track 1", audioSrc: "/audio/track-1.mp3", imageSrc: "/images/bg-1.svg" },
-  { title: "Track 2", audioSrc: "/audio/track-2.mp3", imageSrc: "/images/bg-2.svg" },
-  { title: "Track 3", audioSrc: "/audio/track-3.mp3", imageSrc: "/images/bg-3.svg" },
-  { title: "Track 4", audioSrc: "/audio/track-4.mp3", imageSrc: "/images/bg-4.svg" },
-  { title: "Track 5", audioSrc: "/audio/track-5.mp3", imageSrc: "/images/bg-5.svg" },
-  { title: "Track 6", audioSrc: "/audio/track-6.mp3", imageSrc: "/images/bg-6.svg" },
+  { title: "Bamboo Forest", audioSrc: "/audio/track-1.mp3", imageSrc: "/images/bg-1.jpg" },
+  { title: "Hawksnest 6am", audioSrc: "/audio/track-2.mp3", imageSrc: "/images/bg-2.jpg" },
+  { title: "Music", audioSrc: "/audio/track-3.mp3", imageSrc: "/images/bg-3.jpg" },
 ];
 
 export function MusicGrid() {
