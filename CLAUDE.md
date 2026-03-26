@@ -22,7 +22,7 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - **`'use client'` pushed deep** — only interactive components (music grid, glitch-text) need it. Page and hero section are server components.
 - **Audio files** go in `public/audio/` (track-1.mp3 through track-3.mp3). Background images in `public/images/` (bg-1.jpg through bg-3.jpg).
 - **Attribute-based CSS effects** — `[data-glitch="1"-"6"]` selectors in globals.css, following Symphony and Acid's pattern. 6 variants: 3 bg/color swaps (brown/dark brown/burnt orange), 3 with underline. Used by GlitchText component.
-- **GlitchText component** — `components/glitch-text.tsx`. Client component that splits text into per-word `<span>`s with `data-glitch` attributes. rAF-driven hover animation with probabilistic apply/decay. Used on "Evan Zierk" heading and "About" link.
+- **GlitchText component** — `components/glitch-text.tsx`. Client component that splits text into per-word `<span>`s with `data-glitch` attributes. rAF-driven hover animation with probabilistic apply/decay. Used on "Evan Zierk" heading, "Sound Engineer", "Composer", and "About" labels.
 - **Audio progress line** — Gold vertical line in `music-grid.tsx` sweeps left-to-right during playback using Symphony and Acid's inset `box-shadow` trick. Uses ref-based DOM mutation (not React state) to avoid re-renders on each `timeupdate` event.
 
 ## GitHub Pages
@@ -34,9 +34,9 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - After finishing a PR or chunk of work, run `npm run dev` in the background and tell the user the dev server is ready for review at http://localhost:3000.
 
 ## Current state
-- **Branch**: `main` (PRs 1-8 merged)
-- **PR 7**: ✅ Merged — GlitchText component with word-level hover effects
-- **PR 8**: ✅ Merged — Gold audio progress line (box-shadow sweep), ref-based DOM mutation, .gitignore for raw assets
+- **Branch**: `main` (PRs 1-8 merged + bottom labels update)
+- **PR 8**: ✅ Merged — Gold audio progress line, ref-based DOM mutation, .gitignore for raw assets
+- **Bottom labels**: Added "Sound Engineer" and "Composer" alongside "About" in `<footer>`. Font weight bumped from extralight (200) to normal (400) across all text. Heading size reduced slightly.
 - **Next up**: PR 9 (/about page)
 
 ## Plans
