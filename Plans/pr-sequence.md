@@ -254,6 +254,20 @@
 
 ---
 
+## Bottom Labels + Font Weight Update (non-PR)
+**Branch**: `experiment/bottom-labels`
+**Status**: ✅ Merged to `main`
+
+### What was done
+- Added "Sound Engineer" and "Composer" as GlitchText labels in page footer alongside "About"
+- Footer uses `<footer>` element with `justify-between` layout
+- Font weight changed from extralight (200) to normal (400) across all text (heading, footer labels, music cards)
+- Heading size reduced from `clamp(3rem, 8vw, 6rem)` to `clamp(2.5rem, 6vw, 5rem)`
+- Footer labels sized at `clamp(2rem, 5vw, 4rem)`
+- Code review (/simplify) passed — removed wrapper spans, semantic footer element
+
+---
+
 ## PR 9: About Page
 **Branch**: `feat/about-page`
 **Base**: `main` (after PR 8 merged)
@@ -295,11 +309,12 @@
 | 6 | `feat/visual-redesign` | Color palette + layout redesign to match mockups | ✅ Merged |
 | 7 | `feat/glitch-text` | Word-level glitch hover effects on text | ✅ Merged |
 | 8 | `feat/progress-line` | Gold audio progress line (box-shadow trick) | ✅ Merged |
+| — | `experiment/bottom-labels` | Footer labels (Sound Engineer, Composer) + font-weight 400 | ✅ Merged |
 | 9 | `feat/about-page` | /about route placeholder | Pending |
 
 ## Project state for new context windows
 - **Working directory**: `/Users/caseysilverstein/Documents/2026/evanzierk.com/`
-- **Git**: `main` has PRs 1-8 merged. All on `main` branch.
+- **Git**: `main` has PRs 1-8 merged + bottom labels update. All on `main` branch.
 - **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
 - **Font**: Helvetica, Arial, sans-serif (system fonts). Dropped Geist.
 - **Dev server**: `npm run dev` → `http://localhost:3000`

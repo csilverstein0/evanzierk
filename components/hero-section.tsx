@@ -6,8 +6,8 @@ export function HeroSection() {
       <GlitchText
         text="Evan Zierk"
         tag="h1"
-        className="font-extralight leading-none"
-        style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}
+        className="font-normal leading-none"
+        style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
         highlightRange={[0, 4]}
       />
     </section>

@@ -10,15 +10,25 @@ export default function Home() {
       <div className="flex grow items-center justify-center">
         <MusicGrid />
       </div>
-      <div className="px-6 pb-6 sm:px-10 sm:pb-10 sm:text-right">
+      <footer className="flex items-baseline justify-between px-6 pb-6 sm:px-10 sm:pb-10">
+        <GlitchText
+          text="Sound Engineer"
+          className="font-normal leading-none"
+          style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+        />
+        <GlitchText
+          text="Composer"
+          className="font-normal leading-none"
+          style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+        />
         <Link
           href="/about"
-          className="font-extralight leading-none"
-          style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}
+          className="font-normal leading-none"
+          style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
         >
           <GlitchText text="About" />
         </Link>
-      </div>
+      </footer>
     </main>
   );
 }
