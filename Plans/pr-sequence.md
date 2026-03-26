@@ -201,83 +201,40 @@
 
 ---
 
-## PR 6: Color Palette + Layout Redesign
+## PR 6: Color Palette + Layout Redesign ✅ COMPLETE
 **Branch**: `feat/visual-redesign`
 **Base**: `main`
+**PR**: https://github.com/csilverstein0/evanzierk/pull/5
+**Status**: ✅ Merged to `main`
 
-### Scope
-- Update color palette to warm cream/brown from mockups
-- Redesign layout: name top-left, cards centered, "About" bottom-corner
-- Remove bio + link buttons from hero
-- Restyle music cards to thin-bordered outlined rectangles
-
-### Includes
-- `app/globals.css` — `:root` variables: background → cream `#f5f0e8`, foreground → brown `#5c4a3a`. Add `[data-glitch]`/`[data-decor]` attribute CSS rules (needed for PR 7).
-- `components/hero-section.tsx` — remove bio + links. Name top-left, large. "Evan" gets dark brown/olive background highlight.
-- `components/music-card.tsx` — restyle to thin-bordered outlined rectangles. Keep hover scale/shadow.
-- `app/page.tsx` — new layout: hero pinned top-left, cards centered vertically, "About" text bottom-right (desktop) / bottom-left (mobile). "About" links to `/about`.
-
-### Excludes
-- No glitch effects yet — that's PR 7
-- No progress line — that's PR 8
-- No /about page content — that's PR 9
-
-### Execution instructions
-1. Update `:root` colors in `globals.css` to cream/brown palette
-2. Add `[data-glitch]` and `[data-decor]` attribute CSS selectors (prep for PR 7)
-3. Rewrite `hero-section.tsx` — remove bio/links, position name top-left, add "Evan" highlight
-4. Restyle `music-card.tsx` — thin borders, outlined style
-5. Rewrite `app/page.tsx` layout — hero top-left, grid centered, "About" bottom-corner
-6. `npm run build` — verify
-
-### Verification
-- Page matches mockup layout (name top-left, cards centered, about bottom-corner)
-- Cream background, brown text
-- Cards still have hover audio + background image swap
-- Responsive: cards stack vertically on mobile
-- `npm run build` succeeds
+### What was done
+- Updated `:root` colors in `globals.css` to cream/brown OKLCH palette
+- Redesigned layout: name top-left, cards centered, "About" bottom-corner
+- Removed bio + link buttons from hero section
+- Restyled music cards to thin-bordered outlined rectangles
+- Added `[data-glitch]`/`[data-decor]` attribute CSS rules (prep for PR 7)
+- Matched font to Symphony and Acid (Helvetica, tight line-height, fluid clamp sizing)
 
 ---
 
-## PR 7: Character-Level Glitch Effects on Text
+## PR 7: Word-Level Glitch Hover Effects ✅ COMPLETE
 **Branch**: `feat/glitch-text`
 **Base**: `main` (after PR 6 merged)
+**PR**: https://github.com/csilverstein0/evanzierk/pull/6
+**Status**: Committed, pushed, PR open — awaiting merge
 
-### Scope
-- Build `GlitchText` client component — splits text into per-character spans
-- On hover, randomize per-character visual attributes (color, case, decoration, spacing)
-- Probabilistic decay removes effects over time
-- Apply to "Evan Zerk" heading and "About" text
-
-### Includes
-- `components/glitch-text.tsx` — `'use client'` component:
-  - Props: `text`, `tag` (h1/a/span), `className`, optional `highlightRange` for "Evan" background
-  - Splits text into `<span data-glitch="0" data-decor="0">` per character
-  - On mouseenter over the text region: start rAF loop that probabilistically applies random `data-glitch` (0-4) and `data-decor` (0-5) values to characters
-  - On mouseleave: decay loop continues briefly, then all attributes reset to 0
-  - Warm color palette for glitch values (browns, olives, cream, dark accents)
-- Update `hero-section.tsx` → use `<GlitchText>` for name
-- Update `app/page.tsx` → use `<GlitchText>` for "About" link
-- CSS rules for `[data-glitch]` and `[data-decor]` already added in PR 6
-
-### Excludes
-- No changes to music cards or audio
-- No progress line
-
-### Execution instructions
-1. Build `components/glitch-text.tsx` with character-splitting, hover handler, rAF decay
-2. Define glitch/decor value mappings in CSS (already prepped in PR 6)
-3. Integrate into `hero-section.tsx` and `page.tsx`
-4. Test hover behavior: effects appear, decay organically
-5. `npm run build` — verify
-
-### Verification
-- Hovering "Evan Zerk" triggers randomized per-character visual effects
-- Hovering "About" triggers same effects
-- Effects decay after mouse leaves
-- Colors match warm palette
-- No interference with music card hover behavior
-- `npm run build` succeeds
+### What was done
+- Created `components/glitch-text.tsx` — `'use client'` component:
+  - Props: `text`, `tag` (h1/a/span), `className`, `style`, optional `highlightRange` for "Evan" background
+  - Splits text into per-word `<span data-glitch="0">` elements
+  - On mouseenter: rAF loop probabilistically applies random `data-glitch` (1-6) to words
+  - On mouseleave: decay loop removes effects, self-terminates when all cleared
+  - Cleanup via useEffect cancels rAF on unmount
+  - No-op render optimization: returns same state reference when nothing changes
+- Updated `globals.css` — 6 glitch variants: medium brown bg, dark brown bg, burnt orange bg (3 solid, 3 with underline). Removed `[data-decor]` rules.
+- Updated `hero-section.tsx` → uses `<GlitchText text="Evan Zierk" tag="h1" highlightRange={[0, 4]} />`
+- Updated `app/page.tsx` → uses `<GlitchText text="About" />` inside existing `<Link>`
+- Code review (/simplify) passed — fixed rAF leak, no-op re-renders, switched to cn() utility
 
 ---
 
@@ -355,15 +312,15 @@
 | 3 | `feat/music-grid` | 2x3 grid + hover audio | ✅ Merged |
 | 4 | `feat/background-images` | Full-screen background swap on hover | ✅ Merged |
 | 5 | `feat/github-pages-deploy` | GitHub Actions workflow | ✅ Merged |
-| 6 | `feat/visual-redesign` | Color palette + layout redesign to match mockups | In progress — code done, not committed |
-| 7 | `feat/glitch-text` | Character-level hover glitch effects on text | Pending |
+| 6 | `feat/visual-redesign` | Color palette + layout redesign to match mockups | ✅ Merged |
+| 7 | `feat/glitch-text` | Word-level glitch hover effects on text | PR open — awaiting merge |
 | 8 | `feat/progress-line` | Red audio progress line (box-shadow trick) | Pending |
 | 9 | `feat/about-page` | /about route placeholder | Pending |
 
 ## Project state for new context windows
 - **Working directory**: `/Users/caseysilverstein/Documents/2026/evanzierk.com/`
-- **Git**: `main` has PRs 1-5 merged + real content commit (3 tracks with audio/images). Branch `feat/visual-redesign` has PR 6 changes (uncommitted).
-- **PR 6 status**: All code changes done (globals.css, layout.tsx, hero-section.tsx, music-card.tsx, music-grid.tsx, page.tsx). Needs: visual review, commit, push, open PR or merge directly.
+- **Git**: `main` has PRs 1-6 merged. Branch `feat/glitch-text` has PR 7 (committed, pushed, PR open).
+- **PR 7 status**: Complete. GlitchText component with word-level hover effects, 6 glitch variants (brown/orange, with/without underline). PR open at https://github.com/csilverstein0/evanzierk/pull/6
 - **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
 - **Font**: Helvetica, Arial, sans-serif (system fonts). Dropped Geist.
 - **Dev server**: `npm run dev` → `http://localhost:3000`
