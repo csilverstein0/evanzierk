@@ -23,6 +23,7 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - **Audio files** go in `public/audio/` (track-1.mp3 through track-3.mp3). Background images in `public/images/` (bg-1.jpg through bg-3.jpg).
 - **Attribute-based CSS effects** — `[data-glitch="1"-"6"]` selectors in globals.css, following Symphony and Acid's pattern. 6 variants: 3 bg/color swaps (brown/dark brown/burnt orange), 3 with underline. Used by GlitchText component.
 - **GlitchText component** — `components/glitch-text.tsx`. Client component that splits text into per-word `<span>`s with `data-glitch` attributes. rAF-driven hover animation with probabilistic apply/decay. Used on "Evan Zierk" heading and "About" link.
+- **Audio progress line** — Gold vertical line in `music-grid.tsx` sweeps left-to-right during playback using Symphony and Acid's inset `box-shadow` trick. Uses ref-based DOM mutation (not React state) to avoid re-renders on each `timeupdate` event.
 
 ## GitHub Pages
 - Repo: https://github.com/csilverstein0/evanzierk
@@ -33,10 +34,10 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - After finishing a PR or chunk of work, run `npm run dev` in the background and tell the user the dev server is ready for review at http://localhost:3000.
 
 ## Current state
-- **Branch**: `feat/glitch-text` (PR 7 committed, pushed, PR open)
-- **What's done in PR 7**: GlitchText component with word-level hover effects (bg/color/underline), warm palette with burnt orange pop, applied to heading + About link, rAF cleanup on unmount, no-op render optimization
-- **PR 6**: ✅ Merged to `main`
-- **Next up**: PR 8 (progress line), PR 9 (/about page)
+- **Branch**: `main` (PRs 1-8 merged)
+- **PR 7**: ✅ Merged — GlitchText component with word-level hover effects
+- **PR 8**: ✅ Merged — Gold audio progress line (box-shadow sweep), ref-based DOM mutation, .gitignore for raw assets
+- **Next up**: PR 9 (/about page)
 
 ## Plans
 Detailed plans and research in `Plans/` directory:

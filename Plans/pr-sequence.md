@@ -221,7 +221,7 @@
 **Branch**: `feat/glitch-text`
 **Base**: `main` (after PR 6 merged)
 **PR**: https://github.com/csilverstein0/evanzierk/pull/6
-**Status**: Committed, pushed, PR open — awaiting merge
+**Status**: ✅ Merged to `main`
 
 ### What was done
 - Created `components/glitch-text.tsx` — `'use client'` component:
@@ -238,39 +238,19 @@
 
 ---
 
-## PR 8: Audio Progress Line
+## PR 8: Audio Progress Line ✅ COMPLETE
 **Branch**: `feat/progress-line`
 **Base**: `main` (after PR 7 merged)
+**PR**: https://github.com/csilverstein0/evanzierk/pull/7
+**Status**: ✅ Merged to `main`
 
-### Scope
-- Add red vertical progress line that sweeps left-to-right during audio playback
-- Uses Symphony and Acid's inset box-shadow trick
-
-### Includes
-- Update `components/music-grid.tsx`:
-  - Add progress overlay div: `fixed inset-0`, `pointer-events: none`, `z-index: 2`
-  - Inner span: `display: block`, `height: 100%`, `box-shadow: -2vw 0 0 0 red inset`
-  - Track `timeupdate` on active audio element → update span width as percentage
-  - Width resets to 0 when hover leaves (audio stops)
-- CSS for progress bar in `globals.css` or inline
-
-### Excludes
-- No changes to glitch effects or layout
-- No changes to audio logic (just reads currentTime/duration)
-
-### Execution instructions
-1. Add progress overlay JSX to `music-grid.tsx` return
-2. Add `timeupdate` event listener to audio elements (in handleMouseEnter)
-3. Track progress percentage in state, drive span width
-4. Clean up listener on mouse leave
-5. `npm run build` — verify
-
-### Verification
-- Hovering a card: red line sweeps left-to-right tracking clip playback
-- Leaving card: line disappears
-- Line doesn't block clicks (pointer-events: none)
-- Works with all 3 tracks
-- `npm run build` succeeds
+### What was done
+- Added gold vertical progress line to `components/music-grid.tsx` using Symphony and Acid's inset `box-shadow` trick (`-0.5vw 0 0 0 #e6c040 inset`)
+- Uses ref-based DOM mutation (`progressRef.current.style.width`) instead of React state — avoids re-rendering component tree on each `timeupdate` event (~4x/sec)
+- Extracted `stopAudio()` helper to deduplicate listener teardown + pause + reset pattern
+- Explicit remove-before-add on `timeupdate` listener prevents duplicates
+- Added `.gitignore` entries for raw source asset directories (`/images/`, `/music/`, `/mock/`)
+- Code review (/simplify) passed
 
 ---
 
@@ -313,14 +293,13 @@
 | 4 | `feat/background-images` | Full-screen background swap on hover | ✅ Merged |
 | 5 | `feat/github-pages-deploy` | GitHub Actions workflow | ✅ Merged |
 | 6 | `feat/visual-redesign` | Color palette + layout redesign to match mockups | ✅ Merged |
-| 7 | `feat/glitch-text` | Word-level glitch hover effects on text | PR open — awaiting merge |
-| 8 | `feat/progress-line` | Red audio progress line (box-shadow trick) | Pending |
+| 7 | `feat/glitch-text` | Word-level glitch hover effects on text | ✅ Merged |
+| 8 | `feat/progress-line` | Gold audio progress line (box-shadow trick) | ✅ Merged |
 | 9 | `feat/about-page` | /about route placeholder | Pending |
 
 ## Project state for new context windows
 - **Working directory**: `/Users/caseysilverstein/Documents/2026/evanzierk.com/`
-- **Git**: `main` has PRs 1-6 merged. Branch `feat/glitch-text` has PR 7 (committed, pushed, PR open).
-- **PR 7 status**: Complete. GlitchText component with word-level hover effects, 6 glitch variants (brown/orange, with/without underline). PR open at https://github.com/csilverstein0/evanzierk/pull/6
+- **Git**: `main` has PRs 1-8 merged. All on `main` branch.
 - **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
 - **Font**: Helvetica, Arial, sans-serif (system fonts). Dropped Geist.
 - **Dev server**: `npm run dev` → `http://localhost:3000`
@@ -328,4 +307,5 @@
 - **basePath**: conditional — empty in dev, `"/evanzierk"` in production (see `next.config.ts`)
 - **Deploy**: GitHub Actions auto-deploys on push to `main`. Pages enabled.
 - **Live URL**: https://csilverstein0.github.io/evanzierk/
+- **Next up**: PR 9 (/about page placeholder)
 - **Reference docs**: `Plans/research.md` (tech research), `Plans/plan-v3.md` (current design plan), `Plans/symphonyandacid.md` (Symphony and Acid analysis), `Plans/symphonyandacid-fonts.md` (font details)
