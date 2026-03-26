@@ -22,7 +22,7 @@ export function MusicCard({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <p className="text-sm font-extralight">{title}</p>
+      <p className="text-sm font-normal">{title}</p>
     </div>
   );
 }
