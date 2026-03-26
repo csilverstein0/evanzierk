@@ -199,21 +199,176 @@
 
 ---
 
+---
+
+## PR 6: Color Palette + Layout Redesign
+**Branch**: `feat/visual-redesign`
+**Base**: `main`
+
+### Scope
+- Update color palette to warm cream/brown from mockups
+- Redesign layout: name top-left, cards centered, "About" bottom-corner
+- Remove bio + link buttons from hero
+- Restyle music cards to thin-bordered outlined rectangles
+
+### Includes
+- `app/globals.css` — `:root` variables: background → cream `#f5f0e8`, foreground → brown `#5c4a3a`. Add `[data-glitch]`/`[data-decor]` attribute CSS rules (needed for PR 7).
+- `components/hero-section.tsx` — remove bio + links. Name top-left, large. "Evan" gets dark brown/olive background highlight.
+- `components/music-card.tsx` — restyle to thin-bordered outlined rectangles. Keep hover scale/shadow.
+- `app/page.tsx` — new layout: hero pinned top-left, cards centered vertically, "About" text bottom-right (desktop) / bottom-left (mobile). "About" links to `/about`.
+
+### Excludes
+- No glitch effects yet — that's PR 7
+- No progress line — that's PR 8
+- No /about page content — that's PR 9
+
+### Execution instructions
+1. Update `:root` colors in `globals.css` to cream/brown palette
+2. Add `[data-glitch]` and `[data-decor]` attribute CSS selectors (prep for PR 7)
+3. Rewrite `hero-section.tsx` — remove bio/links, position name top-left, add "Evan" highlight
+4. Restyle `music-card.tsx` — thin borders, outlined style
+5. Rewrite `app/page.tsx` layout — hero top-left, grid centered, "About" bottom-corner
+6. `npm run build` — verify
+
+### Verification
+- Page matches mockup layout (name top-left, cards centered, about bottom-corner)
+- Cream background, brown text
+- Cards still have hover audio + background image swap
+- Responsive: cards stack vertically on mobile
+- `npm run build` succeeds
+
+---
+
+## PR 7: Character-Level Glitch Effects on Text
+**Branch**: `feat/glitch-text`
+**Base**: `main` (after PR 6 merged)
+
+### Scope
+- Build `GlitchText` client component — splits text into per-character spans
+- On hover, randomize per-character visual attributes (color, case, decoration, spacing)
+- Probabilistic decay removes effects over time
+- Apply to "Evan Zerk" heading and "About" text
+
+### Includes
+- `components/glitch-text.tsx` — `'use client'` component:
+  - Props: `text`, `tag` (h1/a/span), `className`, optional `highlightRange` for "Evan" background
+  - Splits text into `<span data-glitch="0" data-decor="0">` per character
+  - On mouseenter over the text region: start rAF loop that probabilistically applies random `data-glitch` (0-4) and `data-decor` (0-5) values to characters
+  - On mouseleave: decay loop continues briefly, then all attributes reset to 0
+  - Warm color palette for glitch values (browns, olives, cream, dark accents)
+- Update `hero-section.tsx` → use `<GlitchText>` for name
+- Update `app/page.tsx` → use `<GlitchText>` for "About" link
+- CSS rules for `[data-glitch]` and `[data-decor]` already added in PR 6
+
+### Excludes
+- No changes to music cards or audio
+- No progress line
+
+### Execution instructions
+1. Build `components/glitch-text.tsx` with character-splitting, hover handler, rAF decay
+2. Define glitch/decor value mappings in CSS (already prepped in PR 6)
+3. Integrate into `hero-section.tsx` and `page.tsx`
+4. Test hover behavior: effects appear, decay organically
+5. `npm run build` — verify
+
+### Verification
+- Hovering "Evan Zerk" triggers randomized per-character visual effects
+- Hovering "About" triggers same effects
+- Effects decay after mouse leaves
+- Colors match warm palette
+- No interference with music card hover behavior
+- `npm run build` succeeds
+
+---
+
+## PR 8: Audio Progress Line
+**Branch**: `feat/progress-line`
+**Base**: `main` (after PR 7 merged)
+
+### Scope
+- Add red vertical progress line that sweeps left-to-right during audio playback
+- Uses Symphony and Acid's inset box-shadow trick
+
+### Includes
+- Update `components/music-grid.tsx`:
+  - Add progress overlay div: `fixed inset-0`, `pointer-events: none`, `z-index: 2`
+  - Inner span: `display: block`, `height: 100%`, `box-shadow: -2vw 0 0 0 red inset`
+  - Track `timeupdate` on active audio element → update span width as percentage
+  - Width resets to 0 when hover leaves (audio stops)
+- CSS for progress bar in `globals.css` or inline
+
+### Excludes
+- No changes to glitch effects or layout
+- No changes to audio logic (just reads currentTime/duration)
+
+### Execution instructions
+1. Add progress overlay JSX to `music-grid.tsx` return
+2. Add `timeupdate` event listener to audio elements (in handleMouseEnter)
+3. Track progress percentage in state, drive span width
+4. Clean up listener on mouse leave
+5. `npm run build` — verify
+
+### Verification
+- Hovering a card: red line sweeps left-to-right tracking clip playback
+- Leaving card: line disappears
+- Line doesn't block clicks (pointer-events: none)
+- Works with all 3 tracks
+- `npm run build` succeeds
+
+---
+
+## PR 9: About Page
+**Branch**: `feat/about-page`
+**Base**: `main` (after PR 8 merged)
+
+### Scope
+- Add `/about` route with placeholder content
+- Static export compatible
+
+### Includes
+- `app/about/page.tsx` — placeholder page. Minimal content, link back to home.
+- Verify `next.config.ts` `trailingSlash` setting works for /about/
+
+### Excludes
+- No real content yet — placeholder only
+- No design system changes
+
+### Execution instructions
+1. Create `app/about/page.tsx` with placeholder
+2. Verify "About" link on home page navigates correctly
+3. `npm run build` — verify `/about/index.html` is generated in `out/`
+
+### Verification
+- `/about` route renders
+- Link from home page works
+- Static export generates `out/about/index.html`
+- `npm run build` succeeds
+
+---
+
 ## Summary
 
 | PR | Branch | Scope | Status |
 |----|--------|-------|--------|
-| 1 | `feat/scaffolding` | Next.js 16 + shadcn/ui v4 + GitHub Pages config | ✅ Merged to main |
-| 2 | `feat/hero-section` | Name, bio, 3 links | ✅ PR #1 open, awaiting merge |
-| 3 | `feat/music-grid` | 2x3 grid + hover audio | Pending |
-| 4 | `feat/background-images` | Full-screen background swap on hover | Pending |
-| 5 | `feat/github-pages-deploy` | GitHub Actions workflow | Pending |
+| 1 | `feat/scaffolding` | Next.js 16 + shadcn/ui v4 + GitHub Pages config | ✅ Merged |
+| 2 | `feat/hero-section` | Name, bio, 3 links | ✅ Merged |
+| 3 | `feat/music-grid` | 2x3 grid + hover audio | ✅ Merged |
+| 4 | `feat/background-images` | Full-screen background swap on hover | ✅ Merged |
+| 5 | `feat/github-pages-deploy` | GitHub Actions workflow | ✅ Merged |
+| 6 | `feat/visual-redesign` | Color palette + layout redesign to match mockups | In progress — code done, not committed |
+| 7 | `feat/glitch-text` | Character-level hover glitch effects on text | Pending |
+| 8 | `feat/progress-line` | Red audio progress line (box-shadow trick) | Pending |
+| 9 | `feat/about-page` | /about route placeholder | Pending |
 
 ## Project state for new context windows
 - **Working directory**: `/Users/caseysilverstein/Documents/2026/evanzierk.com/`
-- **Git**: `main` has PR1 scaffolding merged. `feat/hero-section` has PR2 (1 commit ahead of main), PR open.
+- **Git**: `main` has PRs 1-5 merged + real content commit (3 tracks with audio/images). Branch `feat/visual-redesign` has PR 6 changes (uncommitted).
+- **PR 6 status**: All code changes done (globals.css, layout.tsx, hero-section.tsx, music-card.tsx, music-grid.tsx, page.tsx). Needs: visual review, commit, push, open PR or merge directly.
 - **Stack**: Next.js 16.2.1, React 19.2.4, Tailwind CSS v4, shadcn/ui v4.1.0 (base-nova style)
+- **Font**: Helvetica, Arial, sans-serif (system fonts). Dropped Geist.
 - **Dev server**: `npm run dev` → `http://localhost:3000`
 - **Build**: `npm run build` → static export to `out/`
 - **basePath**: conditional — empty in dev, `"/evanzierk"` in production (see `next.config.ts`)
-- **Reference docs**: `Plans/research.md` has detailed framework research
+- **Deploy**: GitHub Actions auto-deploys on push to `main`. Pages enabled.
+- **Live URL**: https://csilverstein0.github.io/evanzierk/
+- **Reference docs**: `Plans/research.md` (tech research), `Plans/plan-v3.md` (current design plan), `Plans/symphonyandacid.md` (Symphony and Acid analysis), `Plans/symphonyandacid-fonts.md` (font details)
