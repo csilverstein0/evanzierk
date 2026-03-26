@@ -98,10 +98,7 @@
 /* Glitch effect attribute styles (warm palette) — used by GlitchText component */
 [data-glitch="1"] { background: #6b5d4f; color: #f5f0e8; }
 [data-glitch="2"] { background: #3d2e1f; color: #f5f0e8; }
-[data-glitch="3"] { background: #8c7a6a; color: #3d2e1f; }
-[data-glitch="4"] { background: #d4c8b8; color: #3d2e1f; }
-
-[data-decor="1"] { text-transform: uppercase; }
-[data-decor="2"] { text-decoration: underline; }
-[data-decor="3"] { font-style: italic; }
-[data-decor="4"] { letter-spacing: 0.2em; }
+[data-glitch="3"] { background: #d4783c; color: #f5f0e8; }
+[data-glitch="4"] { background: #6b5d4f; color: #f5f0e8; text-decoration: underline; }
+[data-glitch="5"] { background: #d4c8b8; color: #3d2e1f; text-decoration: underline; }
+[data-glitch="6"] { background: #d4783c; color: #f5f0e8; text-decoration: underline; }
