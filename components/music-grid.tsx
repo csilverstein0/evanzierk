@@ -14,49 +14,71 @@ export function MusicGrid() {
   const [activeTrack, setActiveTrack] = useState<number | null>(null);
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
   const activeRef = useRef<number | null>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
+
+  const stopAudio = useCallback((audio: HTMLAudioElement, handler: (e: Event) => void) => {
+    audio.removeEventListener("timeupdate", handler);
+    audio.pause();
+    audio.currentTime = 0;
+  }, []);
+
+  const handleTimeUpdate = useCallback((e: Event) => {
+    const audio = e.currentTarget as HTMLAudioElement;
+    if (audio.duration && progressRef.current) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progressRef.current.style.width = `${pct}%`;
+      progressRef.current.style.boxShadow = "-0.5vw 0 0 0 #e6c040 inset";
+    }
+  }, []);
 
   useEffect(() => {
     return () => {
       for (const audio of audioRefs.current) {
         if (audio) {
+          audio.removeEventListener("timeupdate", handleTimeUpdate);
           audio.pause();
           audio.src = "";
         }
       }
     };
-  }, []);
+  }, [handleTimeUpdate]);
 
   const handleMouseEnter = useCallback((index: number) => {
-    // Pause the currently playing track
     if (activeRef.current !== null) {
       const prev = audioRefs.current[activeRef.current];
-      if (prev) {
-        prev.pause();
-        prev.currentTime = 0;
-      }
+      if (prev) stopAudio(prev, handleTimeUpdate);
     }
 
-    // Lazy-init audio on first hover
     if (!audioRefs.current[index]) {
       audioRefs.current[index] = new Audio(tracks[index].audioSrc);
     }
 
-    audioRefs.current[index]!.play().catch(() => {});
+    const audio = audioRefs.current[index]!;
+    audio.removeEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.play().catch(() => {});
     activeRef.current = index;
+
+    if (progressRef.current) {
+      progressRef.current.style.width = "0%";
+      progressRef.current.style.boxShadow = "-0.5vw 0 0 0 #e6c040 inset";
+    }
     setActiveTrack(index);
-  }, []);
+  }, [handleTimeUpdate, stopAudio]);
 
   const handleMouseLeave = useCallback(() => {
     if (activeRef.current !== null) {
       const audio = audioRefs.current[activeRef.current];
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
+      if (audio) stopAudio(audio, handleTimeUpdate);
     }
     activeRef.current = null;
+
+    if (progressRef.current) {
+      progressRef.current.style.width = "0%";
+      progressRef.current.style.boxShadow = "none";
+    }
     setActiveTrack(null);
-  }, []);
+  }, [handleTimeUpdate, stopAudio]);
 
   return (
     <>
@@ -79,6 +101,13 @@ export function MusicGrid() {
           )}
         />
       </div>
+
+      {/* Progress line — inset box-shadow on a width-driven span (Symphony and Acid technique) */}
+      <span
+        ref={progressRef}
+        className="pointer-events-none fixed inset-0 z-[2] block h-full"
+        style={{ width: "0%", boxShadow: "none" }}
+      />
 
       <div className="flex flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center">
         {tracks.map((track, index) => (
