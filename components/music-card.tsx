@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface MusicCardProps {
@@ -15,17 +14,15 @@ export function MusicCard({
   onMouseLeave,
 }: MusicCardProps) {
   return (
-    <Card
+    <div
       className={cn(
-        "aspect-square cursor-pointer transition-all duration-200",
+        "cursor-pointer border border-foreground px-8 py-3 text-center transition-all duration-200",
         isActive && "scale-105 shadow-lg"
       )}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <CardContent className="flex grow items-center justify-center">
-        <p className="text-base font-medium">{title}</p>
-      </CardContent>
-    </Card>
+      <p className="text-sm font-extralight">{title}</p>
+    </div>
   );
 }

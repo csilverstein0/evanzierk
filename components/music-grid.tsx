@@ -80,19 +80,17 @@ export function MusicGrid() {
         />
       </div>
 
-      <section className="px-4 pb-24">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tracks.map((track, index) => (
-            <MusicCard
-              key={track.title}
-              title={track.title}
-              isActive={activeTrack === index}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-            />
-          ))}
-        </div>
-      </section>
+      <div className="flex flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center">
+        {tracks.map((track, index) => (
+          <MusicCard
+            key={track.title}
+            title={track.title}
+            isActive={activeTrack === index}
+            onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={handleMouseLeave}
+          />
+        ))}
+      </div>
     </>
   );
 }
