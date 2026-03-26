@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { HeroSection } from "@/components/hero-section";
 import { MusicGrid } from "@/components/music-grid";
+import { GlitchText } from "@/components/glitch-text";
 
 export default function Home() {
   return (
@@ -15,9 +16,7 @@ export default function Home() {
           className="font-extralight leading-none"
           style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}
         >
-          <span className="bg-[#6b5d4f] px-2 text-[#f5f0e8] sm:bg-transparent sm:px-0 sm:text-foreground">
-            About
-          </span>
+          <GlitchText text="About" />
         </Link>
       </div>
     </main>

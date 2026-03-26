@@ -19,9 +19,10 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - **Two pages** — `app/page.tsx` (home) and `app/about/page.tsx` (about, not yet created)
 - **basePath is conditional** — empty in dev, `"/evanzierk"` in production (avoids redirect loop in dev). See `next.config.ts`.
 - **Static export** — `output: "export"` in next.config.ts. No server-side features (no cookies, headers, ISR, server actions).
-- **`'use client'` pushed deep** — only interactive components (music grid, future glitch-text) need it. Page and hero section are server components.
+- **`'use client'` pushed deep** — only interactive components (music grid, glitch-text) need it. Page and hero section are server components.
 - **Audio files** go in `public/audio/` (track-1.mp3 through track-3.mp3). Background images in `public/images/` (bg-1.jpg through bg-3.jpg).
-- **Attribute-based CSS effects** — `[data-glitch]` and `[data-decor]` selectors in globals.css, following Symphony and Acid's pattern. Used by future GlitchText component.
+- **Attribute-based CSS effects** — `[data-glitch="1"-"6"]` selectors in globals.css, following Symphony and Acid's pattern. 6 variants: 3 bg/color swaps (brown/dark brown/burnt orange), 3 with underline. Used by GlitchText component.
+- **GlitchText component** — `components/glitch-text.tsx`. Client component that splits text into per-word `<span>`s with `data-glitch` attributes. rAF-driven hover animation with probabilistic apply/decay. Used on "Evan Zierk" heading and "About" link.
 
 ## GitHub Pages
 - Repo: https://github.com/csilverstein0/evanzierk
@@ -32,10 +33,10 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - After finishing a PR or chunk of work, run `npm run dev` in the background and tell the user the dev server is ready for review at http://localhost:3000.
 
 ## Current state
-- **Branch**: `feat/visual-redesign` (PR 6 in progress, not yet committed)
-- **What's done in PR 6**: color palette (cream/brown), layout redesign (name top-left, cards centered row, About bottom-corner), font matched to Symphony and Acid (Helvetica, tight line-height, fluid clamp sizing), music cards restyled to thin-bordered divs, data-glitch/data-decor CSS rules added
-- **What's left in PR 6**: verify visually, commit, push
-- **Next up**: PR 7 (GlitchText component), PR 8 (progress line), PR 9 (/about page)
+- **Branch**: `feat/glitch-text` (PR 7 committed, pushed, PR open)
+- **What's done in PR 7**: GlitchText component with word-level hover effects (bg/color/underline), warm palette with burnt orange pop, applied to heading + About link, rAF cleanup on unmount, no-op render optimization
+- **PR 6**: ✅ Merged to `main`
+- **Next up**: PR 8 (progress line), PR 9 (/about page)
 
 ## Plans
 Detailed plans and research in `Plans/` directory:
