@@ -12,7 +12,7 @@ interface GlitchTextProps {
   href?: string;
 }
 
-const GLITCH_MAX = 6;
+const GLITCH_MAX = 7;
 const APPLY_CHANCE = 0.3;
 const DECAY_CHANCE = 0.12;
 const FRAME_INTERVAL = 80;
@@ -29,6 +29,7 @@ export function GlitchText({
   const [glitchStates, setGlitchStates] = useState<number[]>(() =>
     words.map(() => 0)
   );
+  const [hasBeenHovered, setHasBeenHovered] = useState(false);
   const rafRef = useRef<number | null>(null);
   const lastFrameRef = useRef(0);
   const isHoveredRef = useRef(false);
@@ -93,6 +94,7 @@ export function GlitchText({
 
   const handleMouseEnter = useCallback(() => {
     isHoveredRef.current = true;
+    setHasBeenHovered(true);
     if (rafRef.current === null) {
       rafRef.current = requestAnimationFrame(animate);
     }
@@ -118,7 +120,7 @@ export function GlitchText({
         data-glitch={glitchStates[wi] || 0}
         className={cn(
           "text-foreground",
-          isHighlighted && "bg-[#6b5d4f] text-[#f5f0e8] sm:bg-transparent sm:text-foreground"
+          isHighlighted && !hasBeenHovered && "bg-[#6b5d4f] text-[#f5f0e8]"
         )}
         style={{ transition: "background 0.15s, color 0.15s" }}
       >
