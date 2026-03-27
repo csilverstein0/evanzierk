@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MusicCard } from "@/components/music-card";
 import { cn } from "@/lib/utils";
 
+const basePath = process.env.NODE_ENV === "production" ? "/evanzierk" : "";
+
 const tracks = [
-  { title: "Bamboo Forest", audioSrc: "/audio/track-1.mp3", imageSrc: "/images/bg-1.jpg" },
-  { title: "Hawksnest 6am", audioSrc: "/audio/track-2.mp3", imageSrc: "/images/bg-2.jpg" },
-  { title: "Music", audioSrc: "/audio/track-3.mp3", imageSrc: "/images/bg-3.jpg" },
+  { title: "Bamboo Forest", audioSrc: `${basePath}/audio/track-1.mp3`, imageSrc: `${basePath}/images/bg-1.jpg` },
+  { title: "Hawksnest 6am", audioSrc: `${basePath}/audio/track-2.mp3`, imageSrc: `${basePath}/images/bg-2.jpg` },
+  { title: "Music", audioSrc: `${basePath}/audio/track-3.mp3`, imageSrc: `${basePath}/images/bg-3.jpg` },
 ];
 
 interface MusicGridProps {
