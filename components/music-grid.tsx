@@ -10,25 +10,32 @@ const tracks = [
   { title: "Music", audioSrc: "/audio/track-3.mp3", imageSrc: "/images/bg-3.jpg" },
 ];
 
-export function MusicGrid() {
+interface MusicGridProps {
+  onActiveChange?: (isActive: boolean) => void;
+}
+
+export function MusicGrid({ onActiveChange }: MusicGridProps) {
   const [activeTrack, setActiveTrack] = useState<number | null>(null);
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
   const activeRef = useRef<number | null>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
 
-  const stopAudio = useCallback((audio: HTMLAudioElement, handler: (e: Event) => void) => {
-    audio.removeEventListener("timeupdate", handler);
-    audio.pause();
-    audio.currentTime = 0;
-  }, []);
+  const onActiveChangeRef = useRef(onActiveChange);
+  onActiveChangeRef.current = onActiveChange;
 
   const handleTimeUpdate = useCallback((e: Event) => {
     const audio = e.currentTarget as HTMLAudioElement;
     if (audio.duration && progressRef.current) {
       const pct = (audio.currentTime / audio.duration) * 100;
       progressRef.current.style.width = `${pct}%`;
-      progressRef.current.style.boxShadow = "-0.5vw 0 0 0 #e6c040 inset";
+      progressRef.current.style.boxShadow = "-1vw 0 0 0 #e6c040 inset";
     }
+  }, []);
+
+  const stopAudio = useCallback((audio: HTMLAudioElement, handler: (e: Event) => void) => {
+    audio.removeEventListener("timeupdate", handler);
+    audio.pause();
+    audio.currentTime = 0;
   }, []);
 
   useEffect(() => {
@@ -61,9 +68,10 @@ export function MusicGrid() {
 
     if (progressRef.current) {
       progressRef.current.style.width = "0%";
-      progressRef.current.style.boxShadow = "-0.5vw 0 0 0 #e6c040 inset";
+      progressRef.current.style.boxShadow = "-1vw 0 0 0 #e6c040 inset";
     }
     setActiveTrack(index);
+    onActiveChangeRef.current?.(true);
   }, [handleTimeUpdate, stopAudio]);
 
   const handleMouseLeave = useCallback(() => {
@@ -78,6 +86,7 @@ export function MusicGrid() {
       progressRef.current.style.boxShadow = "none";
     }
     setActiveTrack(null);
+    onActiveChangeRef.current?.(false);
   }, [handleTimeUpdate, stopAudio]);
 
   return (

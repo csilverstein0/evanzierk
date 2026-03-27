@@ -21,7 +21,7 @@ Personal landing page for musician Evan Zerk. Built as a test of agentic coding 
 - **Static export** — `output: "export"` in next.config.ts. No server-side features (no cookies, headers, ISR, server actions).
 - **`'use client'` pushed deep** — only interactive components (music grid, glitch-text) need it. Page and hero section are server components.
 - **Audio files** go in `public/audio/` (track-1.mp3 through track-3.mp3). Background images in `public/images/` (bg-1.jpg through bg-3.jpg).
-- **Attribute-based CSS effects** — `[data-glitch="1"-"6"]` selectors in globals.css, following Symphony and Acid's pattern. 6 variants: 3 bg/color swaps (brown/dark brown/burnt orange), 3 with underline. Used by GlitchText component.
+- **Attribute-based CSS effects** — `[data-glitch="1"-"7"]` selectors in globals.css, following Symphony and Acid's pattern. 7 variants: 3 bg/color swaps (brown/dark brown/burnt orange), 3 with underline, 1 hidden-text (bg matches color). Used by GlitchText component.
 - **GlitchText component** — `components/glitch-text.tsx`. Client component that splits text into per-word `<span>`s with `data-glitch` attributes. rAF-driven hover animation with probabilistic apply/decay. Used on "Evan Zierk" heading, "Sound Engineer", "Composer", and "About" labels.
 - **Audio progress line** — Gold vertical line in `music-grid.tsx` sweeps left-to-right during playback using Symphony and Acid's inset `box-shadow` trick. Uses ref-based DOM mutation (not React state) to avoid re-renders on each `timeupdate` event.
 
